@@ -1,0 +1,151 @@
+Update:
+	-change.timeline:		Expand system with events happening at certain times.
+	-change.animation:		Add possible support for animations based on commands and functions instead of surfaces (such as set_pos, set_size).
+
+	-math.geometry:			Rename Vector class to "Geometry" class?
+							Rename Point class to Vector class?
+							Create more abstract shapes for Circle, Rectangle, etc.
+							Add proper intersection check functions
+
+	-particles:				Expand to particles with lifetime, different shapes, size updating, etc.
+
+	-pc_output.sound:		Evaluate what sound systems can be added and how it can be integrated into pygame_work2
+
+	-shapes.basic:			Evaluate SurfaceRect class: should chop, rotate, rotozoom, scale2x, smoothscale be added? What about an alpha lock?
+							Should a new class "Box" be added, analogues to Point class with only width and height properties?
+							Should Rect class be renamed to AbstractRect?
+	-shapes.data_display:	Create broad support for Timers, ProgressBars, ProggesPies and DataTables.
+	-shapes.shape_fill:		Consider moving / revamping module into "filter effects" module, comparable to Photoshop.
+
+	-global:				Maybe consider more intricate draw functions such as a line with rounded edges?
+							Investigate "dispatch" programming to incorporate function overloading
+							Investigate "@property" decorator to imcorporate more secure "xm, ym, x2, y2" values, maybe even "x, y, width, height"?
+
+
+Learn more about:
+	-Sound & mixer module
+	-Joystick module
+
+
+Add documentation:
+	-change:
+		-animation
+		-effect
+		-timeline
+	-logic:
+		-layout_temp
+	-pc_input:
+		-event
+		-key
+		-keyboard
+		-mouse
+	-pc_output:
+		-display
+		-pages
+
+
+Done documentation:
+	-logic:
+	    -common
+	    -constants
+		-time
+		-loaders
+	-math:
+		-calculus
+		=geometry
+    -shapes:
+        -basic
+        -button
+        -collection
+        -interactables
+        -presets
+        -shapes_fill
+
+
+Done 2021-3-4:
+	-change.effect:			Made all effect classes subclasses of AbstractEffect.
+							Made AbstractEffect subclass of CountDown. All effects are now compatible with change.timeline system.
+							Updated Acceleration class to display more smooth and accurate acceleration. Using current algorithm, fixed_end is always True.
+							Updated Acceleration to MoveSmooth. Class MoveSmooth now uses algorithm that supports fixed_end as True or False.
+							Updated Move to MoveRigid.
+							Updated Merged MoveRigid and MoveSmooth into Move. Made movement type parameter "motion_class", with default LinearChange.
+							Replaced "Move.from_speed" with "Move.linear_from_speed", fixing incompatibility with other motion_classes.
+							Updated AbstractEffect class to inherit from CountUp class instead of CountDown class.
+							Updated Resize class to work with the same "motion_class" system as Move class.
+							Updated ColorTransition class to work with the same "motion_class" system as Move class.
+							Added "original" attribute to AbstractEffect class to keep store the original value of attributes of a class.
+							Updated Rotate class to work with the same "motion_class" system as Move class.
+	-change.animations:		Updated LoopRect class to now inherit from Rect and ResetTimer classes. Added functionality do load from multiple files or from one big file.
+							Updated LoopRect class staticmethod "from_image_set" to now use method from .logic.common.
+
+
+    -shapes.basic           Many minor changes to function names, variable names, etc.
+                            Removed methods "move_x, move_y, move" from Rect class.
+                            Updated all __repr__ methods to be less redundant and more readable.
+                            Added method to get average point from PointsRect.
+                            Updated rotate function of PointsRect.
+                            Removed round() when defining x_offset and y_offset in Rect class.
+                            Added dunder methods for iterating through object of Text class.
+	-shapes.button:			Moved ButtonStates "none, default, hover, click" to logic.constants
+							Updated function entering to work with "FunctionLoader" class from logic.constants.
+							Added function support for "press_up, press_down, pressed, hover".
+							Removed "execute, execute_pressed" methods from AbstractButton class.
+							Updated SurfaceButton class to be more in line with other Button types.
+							Added support for middle- and right button presses in "mouse_states" method.
+							Removed "base_shape" attribute of GroupButton class. Collision detection now cycles to all shapes until it finds a collision.
+	-shapes.data_display:	Added module shapes.data_display.
+	-shapes.interactibles:	Fixed errors with staticmethods "preset" of Slider and CheckBox classes.
+	-shapes.shape_fill:		Fixed issues with vertical filling. Simplified algorithm to be more compact.
+							Added function "multiple_transitions" to accept a color_list to create a transition out of.
+							Used new function to simplify "rainbow_transition". Removed "rgb = int(rgb)" statement.
+	-shapes.filled_shapes:	Removed module shapes.filled_shapes. Made redundant by the module shapes.shape_fill.
+
+
+	-logic.calculus:		Added module logic.calculus.
+							Added class ParabolaMotion to provide smooth acceleration and deceleration from given distance and ticks.
+							Addes class LinearMotion to provide linear motion from given distance and ticks.
+							Added class TrigMotion to provide cos(t) motion from given distance and ticks.
+							Added class ExponentialMotion to provide a^t motion from given distance and ticks.
+							Updated class names from Motion to Change, generalising their usage.
+	-logic.common:			Added method "frames_from_image" to pull multiple frames from one image.
+							Added method "clamp" to get value between min_value and max_value.
+	-logic.constants:		Added "ButtonState" class for "none, default, hover, click".
+							Added "FunctionLoader" class to work better with Button types and Interactables from .shapes.
+							Added "MouseButtonType" class to store "left, middle, right, scroll_up, scroll_down".
+	-logic.game_math:		Added methods for calculating cuboid, cylinder and cone to Volume class.
+	                        Added method for calculating average point out of pointlist.
+	                        Added method for determining if there is collision between point and surface_rect (pixel perfect)
+	-logic.timer:			Added method "seconds_float" to Time class to improve comparison functions.
+							Added class CountUp to behave similar like class CountDown except it goes from 0 to _base and then stops.
+							Class ResetTimer now inherits from CountUp. Added attribute max_iter with default math.inf.
+							Updated function entering to work with "FunctionLoader" class from logic.constants.
+
+	-pc_input.mouse:		Added method to get left, middle or right button by index.
+	
+	-pc_output.pages:		Changed Page attribute "shapes" from list type to containtertype "_ShapeList".
+							Updated the way "__loop_behavior_shapes" are processed.
+							Added a way to get "__update_alignment_shapes" processed.
+							Added "timeline" attribute to Page. Timeline attribute now updates in loop method.
+	-pc_output.display:		Removed check if shape has "update_alignment" attribute in Display.update_shapes_pos().
+
+
+Done:
+	-shapes:				Removed x_offset, y_offset in Rect class and all inheriting classes.
+							x_mode and y_mode are now LayoutDefault-like classes. Constants from Format class can still be entered.
+							update_alignment method and all methods relating to x_mode, y_mode have been changed, simplified or removed.
+
+	-math:					Moved logic.game_math module to math and renamed game_math module to geometry module
+							Moved logic.calculus module to math
+	-math.geometry:			Renamed Geometry class to Vector class
+							Simplified shapes.presets to output point tuples instead of Polygon objects
+							Moved shapes.presets functions for point tuples to geometry module into Points class.
+							Added "surface_point" for pixel perfect collisiond detection between Point and SurfaceRect.
+							Added function "get_aspect_ratio" for aspect ratio calculations from width and height.
+
+	-logic.loaders:			Moved File, _VariableLoader, _FileLoader, _ImageLoader, _SoundLoader, Functionloader classes to loaders module.
+							Moved Variables, Fonts, Images, Sounds objects to loaders module.
+	-logic.time:			Renamed timer module to time module.
+	-logic.common:			Changed the way "represent" function works.
+	-logic.constants:		Renamed Layout class to Format class.
+	-logic.layout_temp		Added LayoutDefault, LayoutLeftAbove, LayoutRightBelow, LayoutMiddle, LayoutFill classes to replace x_mode, y_mode integer values.
+							Class names and module name are temporary and will are still subjected to change.
